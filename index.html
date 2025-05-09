@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Consulta de Persona</title>
 </head>
+
 <body>
   <h1>Consultar Persona por DNI</h1>
   <form id="consultaForm">
@@ -18,31 +20,28 @@
     const form = document.getElementById('consultaForm');
     const resultado = document.getElementById('resultado');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function (event) {
       event.preventDefault(); // No recargar la página
 
       const dni = document.getElementById('dni').value;
 
-      fetch('https://4878-181-30-186-146.ngrok-free.app/api/buscar-persona', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ dni: dni })
+      fetch(`https://4878-181-30-186-146.ngrok-free.app/api/buscar-persona?dni=${dni}`, {
+        method: 'GET',
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          resultado.innerText = "Persona no encontrada.";
-        } else {
-          resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        resultado.innerText = "Error al buscar persona.";
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            resultado.innerText = "Persona no encontrada.";
+          } else {
+            resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          resultado.innerText = "Error al buscar persona.";
+        });
     });
   </script>
 </body>
+
 </html>
