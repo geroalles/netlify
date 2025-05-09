@@ -25,8 +25,12 @@
 
       const dni = document.getElementById('dni').value;
 
-      fetch(`https://4878-181-30-186-146.ngrok-free.app/api/buscar-persona?dni=${dni}`, {
-        method: 'GET',
+      fetch('https://4878-181-30-186-146.ngrok-free.app/api/buscar-persona', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ dni: dni })  // Enviamos el DNI en el cuerpo de la solicitud
       })
         .then(response => response.json())
         .then(data => {
@@ -40,6 +44,7 @@
           console.error('Error:', error);
           resultado.innerText = "Error al buscar persona.";
         });
+
     });
   </script>
 </body>
