@@ -23,7 +23,7 @@
 
       const dni = document.getElementById('dni').value;
 
-      fetch('https://1a9d-181-30-186-146.ngrok-free.app/api/buscar-persona', {
+      fetch('https://4878-181-30-186-146.ngrok-free.app/api/buscar-persona', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,7 +35,7 @@
         if (data.error) {
           resultado.innerText = "Persona no encontrada.";
         } else {
-          resultado.innerHTML = `<p>Nombre: ${data.nombre}</p><p>Apellido: ${data.apellido}</p>`;
+          resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
         }
       })
       .catch(error => {
