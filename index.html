@@ -6,10 +6,43 @@
 </head>
 <body>
   <h1>Consultar Persona por DNI</h1>
-  <form action="/buscar-persona" method="GET">
+  <form id="consultaForm">
     <label for="dni">DNI:</label>
     <input type="text" id="dni" name="dni" required>
     <button type="submit">Buscar</button>
   </form>
+
+  <div id="resultado"></div>
+
+  <script>
+    const form = document.getElementById('consultaForm');
+    const resultado = document.getElementById('resultado');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // No recargar la página
+
+      const dni = document.getElementById('dni').value;
+
+      fetch('https://TU-NGROK-ID.ngrok-free.app/api/buscar-persona', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ dni: dni })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          resultado.innerText = "Persona no encontrada.";
+        } else {
+          resultado.innerHTML = `<p>Nombre: ${data.nombre}</p><p>Apellido: ${data.apellido}</p>`;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        resultado.innerText = "Error al buscar persona.";
+      });
+    });
+  </script>
 </body>
 </html>
