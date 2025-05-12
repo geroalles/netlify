@@ -16,12 +16,24 @@
 
   <div id="resultado"></div>
 
+
+  <h1>Consultar Existencia de Mail</h1>
+  <form id="consultaForm2">
+    <label for="mail">Mail:</label>
+    <input type="email" id="mail" name="mail" required>
+    <button type="submit2">Buscar</button>
+  </form>
+
+  <div id="resultado2"></div>
+
+
+
   <script>
     const form = document.getElementById('consultaForm');
     const resultado = document.getElementById('resultado');
 
     form.addEventListener('submit', function (event) {
-      event.preventDefault(); // No recargar la página
+      event.preventDefault(); 
 
       const dni = document.getElementById('dni').value;
 
@@ -30,11 +42,11 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ dni: dni })  // Enviamos el DNI en el cuerpo de la solicitud
+        body: JSON.stringify({ dni: dni })  
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data); // Verificar la respuesta en la consola
+          console.log(data); 
           if (data.error) {
             resultado.innerText = "Persona no encontrada.";
           } else {
@@ -44,6 +56,39 @@
         .catch(error => {
           console.error('Error:', error);
           resultado.innerText = "Error al buscar persona.";
+        });
+
+    });
+
+  </script>
+  <script>
+    const form2 = document.getElementById('consultaForm2');
+    const resultado2 = document.getElementById('resultado2');
+
+    form.addEventListener('submit2', function (event) {
+      event.preventDefault(); 
+
+      const mail = document.getElementById('mail').value;
+
+      fetch('https://f086-181-30-186-146.ngrok-free.app/api/checkMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mail: mail})  
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); 
+          if (data.error) {
+            resultado.innerText = "El mail no existe.";
+          } else {
+            resultado.innerHTML = `El mail existe`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          resultado.innerText = "Error al buscar el mail.";
         });
 
     });
