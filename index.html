@@ -92,7 +92,7 @@
         if (Array.isArray(cursos) && cursos.length > 0) {
           cursos.forEach(c => {
             const li = document.createElement('li');
-            li.innerHTML = `<strong>${c.nombre_curso}</strong> — ${c.estado || 'sin estado'}`;
+            li.innerHTML = `<strong>${c.titulo}</strong>`;
             resultadoCursos.appendChild(li);
           });
         } else {
