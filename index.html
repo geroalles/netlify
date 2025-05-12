@@ -95,7 +95,7 @@
       const dni = document.getElementById('dniCursos').value;
 
       try {
-        const res = await fetch(`https://d171-181-30-186-146.ngrok-free.app/api/cursos/${dni}`, {
+        const res = await fetch('https://d171-181-30-186-146.ngrok-free.app/api/cursos/${dni}', {
           method: 'GET'
         });
         // 1) Imprime status y un extracto del body
