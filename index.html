@@ -1,85 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Consulta de Persona y Cursos</title>
+  <title>Consulta de Persona</title>
 </head>
+
 <body>
-  <h1>Consulta Persona por Documento y sus Cursos</h1>
+  <h1>Consulta Persona por Documento</h1>
   <form id="consultaForm">
     <label for="dni">DNI:</label>
     <input type="text" id="dni" name="dni" required>
     <button type="submit">Buscar</button>
   </form>
 
-  <section id="resultado-persona">
-    <h2>Persona</h2>
-    <div id="persona"></div>
-  </section>
-
-  <section id="resultado-cursos">
-    <h2>Cursos</h2>
-    <ul id="cursos"></ul>
-  </section>
+  <div id="resultado"></div>
 
   <script>
     const form = document.getElementById('consultaForm');
-    const divPersona = document.getElementById('persona');
-    const ulCursos   = document.getElementById('cursos');
+    const resultado = document.getElementById('resultado');
 
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
-      divPersona.textContent = '';
-      ulCursos.innerHTML     = '';
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // No recargar la página
 
       const dni = document.getElementById('dni').value;
 
-      try {
-        // 1) Buscar persona
-        const personaRes = await fetch('https://d171-181-30-186-146.ngrok-free.app/api/buscar-persona', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dni })
+      fetch('https://d171-181-30-186-146.ngrok-free.app/api/buscar-persona', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ dni: dni })  // Enviamos el DNI en el cuerpo de la solicitud
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Verificar la respuesta en la consola
+          if (data.error) {
+            resultado.innerText = "Persona no encontrada.";
+          } else {
+            resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          resultado.innerText = "Error al buscar persona.";
         });
 
-        if (!personaRes.ok) {
-          divPersona.textContent = 'Persona no encontrada.';
-          return;
-        }
-
-        const personaData = await personaRes.json();
-        divPersona.innerHTML = `
-          <p>Nombre: ${personaData.nombre_p}</p>
-          <p>Apellido: ${personaData.apellido}</p>
-        `;
-
-        // 2) Traer cursos
-        const cursosRes = await fetch(`https://d171-181-30-186-146.ngrok-free.app/api/cursos/${dni}`, {
-          method: 'GET'
-        });
-
-        if (!cursosRes.ok) {
-          ulCursos.innerHTML = '<li>No se encontraron cursos.</li>';
-          return;
-        }
-
-        const cursos = await cursosRes.json();
-        if (Array.isArray(cursos) && cursos.length) {
-          cursos.forEach(c => {
-            const li = document.createElement('li');
-            li.textContent = `${c.nombre_curso} (${c.estado || 'sin estado'})`;
-            ulCursos.appendChild(li);
-          });
-        } else {
-          ulCursos.innerHTML = '<li>No hay cursos registrados.</li>';
-        }
-
-      } catch (err) {
-        console.error(err);
-        divPersona.textContent = 'Error al buscar persona.';
-        ulCursos.innerHTML     = '<li>Error al traer cursos.</li>';
-      }
     });
+    
   </script>
 </body>
+
 </html>
