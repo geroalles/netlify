@@ -1,88 +1,254 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Consulta de Persona y Mail</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
+  <title>Login</title>
+  <style>
+    /*IMAGEN DE FONDO*/
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /*RECTANGULO OSCURO*/
+    .rectangulo_oscuro {
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+    }
+
+    .rectangulo_oscuro img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* RECTANGULO AZUL */
+    .rectangulo_azul {
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+    }
+
+    /* RECTANGULO AZUL CHICO */
+    .rectangulo_azul_chico {
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 50%;
+    }
+
+    /* IMAGEN LAFEDAR */
+    .imagen_lafedar {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 50%;
+    }
+
+    .imagen_lafedar h3 {
+      margin-top: 10px;
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 1.5rem;
+      color: white;
+      text-align: center;
+    }
+
+    /* ICONO USUARIO */
+    .icono_usuario {
+      width: 36%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 90%;
+      margin-bottom: 15px;
+    }
+
+    /* ICONO CONTRASEÑA */
+    .icono_contraseña {
+      width: 35.5%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 117%;
+      margin-bottom: 15px;
+    }
+
+    /* SEPARAR ICONOS Y LABELS */
+    .icono_usuario img,
+    .icono_contraseña img {
+      margin-right: 10px;
+    }
+
+    /* INPUT USUARIO y CONTRASEÑA */
+    .input_usuario,
+    .input_contraseña {
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .input_usuario {
+      top: 0;
+      height: 100%;
+    }
+
+    .input_contraseña {
+      top: 0;
+      height: 127%;
+    }
+
+    /* ESTILOS DE INPUTS */
+    .input_usuario input,
+    .input_contraseña input {
+      width: 200px;
+      height: 15px;
+      border-radius: 10px;
+      border: 1.5px solid black;
+      padding: 10px;
+      background-color: rgba(217, 217, 217, 0.2);
+      font-family: 'Roboto Condensed', sans-serif;
+      color: white;
+      z-index: 10;
+    }
+
+    /* Cambiar fondo de autocompletar */
+    input:-webkit-autofill {
+      -webkit-box-shadow: inset 0 0 0 1000px rgba(217, 217, 217, 0.2) !important;
+      -webkit-text-fill-color: black;
+    }
+
+    input:-moz-autofill {
+      background-color: rgba(217, 217, 217, 0.2) !important;
+      color: black;
+    }
+
+    /* BOTÓN INICIAR SESIÓN */
+    .btn-iniciar-sesion button {
+      width: 150px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid black;
+      background-color: rgba(217, 217, 217, 0.2);
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      position: absolute;
+      right: 13.3%;
+      top: 75%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+      z-index: 10;
+    }
+
+    .btn-iniciar-sesion button:hover {
+      background-color: rgba(0, 105, 215, 0.8);
+    }
+
+    /* OLVIDASTE TU CONTRASEÑA */
+    .forgot-password {
+      z-index: 10;
+      width: 35%;
+      display: inline;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 27%;
+      top: 53%;
+    }
+  </style>
 </head>
 
-<body>
-  <h1>Consulta Persona por Documento</h1>
-  <form id="consultaForm">
-    <label for="dni">DNI:</label>
-    <input type="text" id="dni" name="dni" required>
-    <button type="submit">Buscar</button>
-  </form>
-  <div id="resultado"></div>
+<body style="background-image: url('fotos_login/FONDO CADENA COMPRIMIDOS.png');">
 
-  <h1>Consultar Existencia de Mail</h1>
-  <form id="consultaForm2">
-    <label for="mail">Mail:</label>
-    <input type="email" id="mail" name="mail" required>
-    <!-- Cambié type a "submit" -->
-    <button type="submit">Buscar Mail</button>
-  </form>
-  <div id="resultado2"></div>
+  <div class="rectangulo_oscuro">
+    <img src="fotos_login/RECTANGULO OSCURO.png" alt="Rectángulo oscuro">
+  </div>
 
-  <script>
-    // === LÓGICA PARA PERSONA ===
-    const form = document.getElementById('consultaForm');
-    const resultado = document.getElementById('resultado');
+  <div class="rectangulo_azul">
+    <img src="fotos_login/RECTANGULO AZUL GRANDE.png" alt="Rectángulo azul">
+  </div>
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault(); // evita el reload
+  <div class="rectangulo_azul_chico">
+    <img src="fotos_login/RECTANGULO LAFEDAR.png" alt="Rectángulo azul chico">
+  </div>
 
-      const dni = document.getElementById('dni').value;
+  <div class="imagen_lafedar">
+    <img src="fotos_login/IMAGEN LAFEDAR.png" alt="Imagen Lafedar">
+    <h3>LABORATORIOS <br>LAFEDAR</h3>
+  </div>
 
-      fetch('https://f086-181-30-186-146.ngrok-free.app/api/buscar-persona', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dni })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          resultado.innerText = "Persona no encontrada.";
-        } else {
-          resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        resultado.innerText = "Error al buscar persona.";
-      });
-    });
+  <div class="formulario">
+    <form method="POST" action="#">
+      <div class="icono_usuario">
+        <img src="fotos_login/ICONO USUARIO.png" alt="Icono usuario">
+        <label for="email" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU EMAIL</label>
+      </div>
 
+      <div class="input_usuario">
+        <input type="email" id="email" name="email" required>
+      </div>
 
-    // === LÓGICA PARA MAIL ===
-    const form2 = document.getElementById('consultaForm2');
-    const resultado2 = document.getElementById('resultado2');
+      <div class="icono_contraseña">
+        <img src="fotos_login/ICONO CONTRASEÑA.png" alt="Icono contraseña">
+        <label for="password" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU CONTRASEÑA</label>
+      </div>
 
-    // Usa 'submit' y el listener sobre form2
-    form2.addEventListener('submit', function (event) {
-      event.preventDefault(); // evita el reload
+      <div class="input_contraseña">
+        <input type="password" id="password" name="password" required>
+        <div class="forgot-password">
+          <a href="#" style="color: white;">¿Olvidaste tu contraseña?</a>
+        </div>
+      </div>
 
-      const mail = document.getElementById('mail').value;
+      <div class="btn-iniciar-sesion">
+        <button type="submit">INICIAR SESIÓN</button>
+      </div>
+    </form>
+  </div>
 
-      fetch('https://f086-181-30-186-146.ngrok-free.app/api/checkMail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mail })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          resultado2.innerText = "El mail no existe.";
-        } else {
-          resultado2.innerText = "El mail existe.";
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        resultado2.innerText = "Error al buscar el mail.";
-      });
-    });
-  </script>
 </body>
 
 </html>
