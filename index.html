@@ -3,134 +3,51 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Consulta de Persona y Cursos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    section {
-      margin-bottom: 40px;
-    }
-
-    label {
-      display: inline-block;
-      width: 50px;
-    }
-
-    input {
-      margin-right: 10px;
-    }
-
-    .error {
-      color: red;
-    }
-  </style>
+  <title>Consulta de Persona</title>
 </head>
 
 <body>
-  <!-- === Formulario de Persona === -->
-  <section>
-    <h1>Consulta Persona por Documento</h1>
-    <form id="personaForm">
-      <label for="dniPersona">DNI:</label>
-      <input type="text" id="dniPersona" name="dniPersona" required>
-      <button type="submit">Buscar Persona</button>
-    </form>
-    <div id="resultadoPersona"></div>
-  </section>
+  <h1>Consulta Persona por Documento</h1>
+  <form id="consultaForm">
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" name="dni" required>
+    <button type="submit">Buscar</button>
+  </form>
 
-  <!-- === Formulario de Cursos === -->
-  <section>
-    <h1>Consulta Cursos por DNI</h1>
-    <form id="cursosForm">
-      <label for="dniCursos">DNI:</label>
-      <input type="text" id="dniCursos" name="dniCursos" required>
-      <button type="submit">Buscar Cursos</button>
-    </form>
-    <ul id="resultadoCursos"></ul>
-  </section>
+  <div id="resultado"></div>
 
   <script>
-    // --- LÓGICA PARA BUSCAR PERSONA ---
-    const personaForm = document.getElementById('personaForm');
-    const resultadoPersona = document.getElementById('resultadoPersona');
+    const form = document.getElementById('consultaForm');
+    const resultado = document.getElementById('resultado');
 
-    personaForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      resultadoPersona.textContent = '';            // limpiar antes
-      const dni = document.getElementById('dniPersona').value;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // No recargar la página
 
-      try {
-        const res = await fetch('https://d171-181-30-186-146.ngrok-free.app/api/buscar-persona', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dni })
+      const dni = document.getElementById('dni').value;
+
+      fetch('https://d171-181-30-186-146.ngrok-free.app/api/buscar-persona', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ dni: dni })  // Enviamos el DNI en el cuerpo de la solicitud
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Verificar la respuesta en la consola
+          if (data.error) {
+            resultado.innerText = "Persona no encontrada.";
+          } else {
+            resultado.innerHTML = `<p>Nombre: ${data.nombre_p}</p><p>Apellido: ${data.apellido}</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          resultado.innerText = "Error al buscar persona.";
         });
 
-        if (!res.ok) {
-          resultadoPersona.innerHTML = '<p class="error">Persona no encontrada.</p>';
-          return;
-        }
-
-        const persona = await res.json();
-        resultadoPersona.innerHTML = `
-          <p><strong>Nombre:</strong> ${persona.nombre_p}</p>
-          <p><strong>Apellido:</strong> ${persona.apellido}</p>
-        `;
-      } catch (err) {
-        console.error(err);
-        resultadoPersona.innerHTML = '<p class="error">Error al buscar persona.</p>';
-      }
     });
-
-    // --- LÓGICA PARA BUSCAR CURSOS ---
-    const cursosForm = document.getElementById('cursosForm');
-    const resultadoCursos = document.getElementById('resultadoCursos');
-
-    cursosForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      resultadoCursos.innerHTML = '';               // limpiar antes
-      const dni = document.getElementById('dniCursos').value;
-
-      try {
-        const res = await fetch('https://d171-181-30-186-146.ngrok-free.app/api/cursos/${dni}', {
-          method: 'GET'
-        });
-        // 1) Imprime status y un extracto del body
-        console.log('Status:', res.status);
-        const text = await res.clone().text();
-        console.log('Body preview:', text.slice(0, 200));
-
-        // 2) Si no es JSON, aborta con un mensaje
-        const contentType = res.headers.get('Content-Type') || '';
-        if (!contentType.includes('application/json')) {
-          resultadoCursos.innerHTML =
-            `<li class="error">Esperaba JSON pero recibí ${contentType}</li>`;
-          return;
-        }
-
-        if (!res.ok) {
-          resultadoCursos.innerHTML = '<li class="error">No se encontraron cursos.</li>';
-          return;
-        }
-
-        const cursos = await res.json();
-        if (Array.isArray(cursos) && cursos.length > 0) {
-          cursos.forEach(c => {
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>${c.titulo}</strong>`;
-            resultadoCursos.appendChild(li);
-          });
-        } else {
-          resultadoCursos.innerHTML = '<li>No hay cursos registrados.</li>';
-        }
-      } catch (err) {
-        console.error(err);
-        resultadoCursos.innerHTML = '<li class="error">Error al traer cursos.</li>';
-      }
-    });
+    
   </script>
 </body>
 
