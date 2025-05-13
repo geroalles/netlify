@@ -26,7 +26,7 @@
 
     <div class="formulario">
         <form method="POST" action="{{ route('login') }}">
-            @csrf
+           
             <div class="icono_usuario">
                 <img src="fotos_login/ICONO USUARIO.png" alt="Icono usuario">
                 <label for="email" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU EMAIL</label>
@@ -50,12 +50,8 @@
             </div>
 
             </div>
-            @if ($errors->any())
-                <div class="invalid-feedback" role="alert" style="display: block; color: red;">
-                    <strong>{{ $errors->first('email') ?: $errors->first('password') ?: __('Las credenciales proporcionadas son incorrectas.') }}</strong>
-                </div>
-            @endif
-
+              
+              
             <div class="btn-iniciar-sesion">
                 <button type="submit" style="color:white">INICIAR SESION</button>
             </div>
