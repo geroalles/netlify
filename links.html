@@ -49,12 +49,22 @@
     }
 
     #login-alert {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        width: 80%;
+        max-width: 400px;
         padding: 1em;
         background: #def;
         color: #046;
-        display: none;
         text-align: center;
+        display: none;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
+
 
     #container-botones {
         position: absolute;
