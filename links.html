@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Links</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Links</title>
 </head>
+
 <body>
-  <!-- Aquí mostrarás el mensaje -->
-  <div
-  id="login-alert"
-  style="
-    padding: 1em;
-    background: #def;
-    color: #046;
-    display: none;
-    text-align: center;
-  "
-></div>
+
+    <div id="login-alert" style="padding: 1em;background: #def;color: #046;display: none;text-align: center;"></div>
 
 
-  <!-- Resto de tu contenido de links.html -->
+    <a href="medicamentos.html">
+        <button>Solicitud de Medicamentos</button>
+    </a>
 
-  <script>
-    // Al cargar la página, leemos y borramos el mensaje
-    const msg = sessionStorage.getItem("loginMessage");
-    if (msg) {
-      const alerta = document.getElementById("login-alert");
-      alerta.textContent = msg;
-      alerta.style.display = "block";
-      // Opcional: que desaparezca tras 5 segundos
-      setTimeout(() => alerta.style.display = "none", 5000);
-      // Lo borramos para no mostrarlo en futuros reloads
-      sessionStorage.removeItem("loginMessage");
-    }
-  </script>
+
+    <script> //mostrar el mensaje de login
+        const msg = sessionStorage.getItem("loginMessage");
+        if (msg) {
+            const alerta = document.getElementById("login-alert");
+            alerta.textContent = msg;
+            alerta.style.display = "block";
+            setTimeout(() => alerta.style.display = "none", 3000);
+            sessionStorage.removeItem("loginMessage");
+        }
+    </script>
 </body>
+
 </html>
