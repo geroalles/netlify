@@ -1,67 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
-    <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet" />
+  <title>Login</title>
 </head>
 <body>
-    <div class="rectangulo_oscuro">
-      <img src="fotos_login/RECTANGULO OSCURO.png" alt="Rectángulo oscuro">
-    </div>
+  <div class="rectangulo_oscuro">
+    <img src="fotos_login/RECTANGULO OSCURO.png" alt="Rectángulo oscuro" />
+  </div>
 
-    <div class="rectangulo_azul">
-        <img src="fotos_login/RECTANGULO AZUL GRANDE.png" alt="Rectangulo azul">
-    </div>
+  <div class="rectangulo_azul">
+    <img src="fotos_login/RECTANGULO AZUL GRANDE.png" alt="Rectangulo azul" />
+  </div>
 
-    <div class="rectangulo_azul_chico">
-        <img src="fotos_login/RECTANGULO LAFEDAR.png" alt="Rectangulo azul chico">
-    </div>
+  <div class="rectangulo_azul_chico">
+    <img src="fotos_login/RECTANGULO LAFEDAR.png" alt="Rectangulo azul chico" />
+  </div>
 
-    <div class="imagen_lafedar">
-        <img src="fotos_login/IMAGEN LAFEDAR.png" alt="Imagen lafedar" >
-        <h3 style="font-family: 'Roboto Flex', sans-serif; color: white">LABORATORIOS <br>LAFEDAR</h3>
-    </div>
+  <div class="imagen_lafedar">
+    <img src="fotos_login/IMAGEN LAFEDAR.png" alt="Imagen lafedar" />
+    <h3 style="font-family: 'Roboto Flex', sans-serif; color: white">LABORATORIOS <br />LAFEDAR</h3>
+  </div>
 
-    <div class="formulario">
-        <form method="POST" action="{{ route('login') }}">
-           
-            <div class="icono_usuario">
-                <img src="fotos_login/ICONO USUARIO.png" alt="Icono usuario">
-                <label for="email" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU EMAIL</label>
-            </div>
-            <div class="input_usuario">
-                <input type="email" id="email" name="email" required>
-                
-            </div>
+  <div class="formulario">
+    <form id="loginForm">
+      <div class="icono_usuario">
+        <img src="fotos_login/ICONO USUARIO.png" alt="Icono usuario" />
+        <label for="email" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU EMAIL</label>
+      </div>
+      <div class="input_usuario">
+        <input type="email" id="email" name="email" required />
+      </div>
 
-            <div class="icono_contraseña">
-                <img src="fotos_login/ICONO CONTRASEÑA.png" alt="Icono contraseña">
-                <label for="password" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU CONTRASEÑA</label>
-                
-            </div>
-            <div class="input_contraseña">
-                <input type="password" id="password" name="password" required>
-                <div class="forgot-password">
-                <a href="{{ route('password.request') }}" style="color:white;">
-                    ¿Olvidaste tu contraseña?
-                </a>
-            </div>
+      <div class="icono_contraseña">
+        <img src="fotos_login/ICONO CONTRASEÑA.png" alt="Icono contraseña" />
+        <label for="password" style="font-family: 'Roboto Condensed', sans-serif; color: white">INGRESA TU CONTRASEÑA</label>
+      </div>
+      <div class="input_contraseña">
+        <input type="password" id="password" name="password" required />
+        <div class="forgot-password">
+          <a href="#" style="color:white;">¿Olvidaste tu contraseña?</a>
+        </div>
+      </div>
 
-            </div>
-              
-              
-            <div class="btn-iniciar-sesion">
-                <button type="submit" style="color:white">INICIAR SESION</button>
-            </div>
+      <div class="btn-iniciar-sesion">
+        <button type="submit" style="color:white">INICIAR SESION</button>
+      </div>
+    </form>
+  </div>
 
-            
-        </form>
-    </div>
-    
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {
+        email: formData.get("email"),
+        password: formData.get("password")
+      };
+
+      try {
+        const response = await fetch("https://1c04-181-30-186-146.ngrok-free.app/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data),
+          credentials: "include" // Si Laravel usa cookies (sanctum por ejemplo)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Login correcto. Bienvenido " + result.user.name);
+          // Guardar token o redirigir
+        } else {
+          alert("Error: " + (result.message || "Credenciales incorrectas"));
+        }
+      } catch (error) {
+        alert("Error en la conexión con el servidor.");
+        console.error(error);
+      }
+    });
+  </script>
 </body>
 </html>
+
 
 <style>
     
