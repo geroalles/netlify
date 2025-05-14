@@ -75,8 +75,10 @@
         const result = await response.json();
 
         if (response.ok) {
+          
+          window.location.href = "links.html";
           alert("Login correcto. Bienvenido " + result.user.name);
-          // Guardar token o redirigir
+          
         } else {
           alert("Error: " + (result.message || "Credenciales incorrectas"));
         }
